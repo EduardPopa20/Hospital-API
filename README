@@ -1,0 +1,144 @@
+In order to start the application, run `npm i` in your terminal in order to install the necessary dependencies. Some of the packages used in developing the application are: dotenv, bcrypt, express, mongoose, jest, superset.
+
+The role of the application is to handle main activities in a hospital. The roles that are present in the current application are: Manager, Doctor, Assistant. Notice that the Manager has a predefined account, playing the role of an administrator in a reall application. Both the assistant and the doctor must have an account in order to make API requests.
+! Patient does not have an account
+
+!! The implementation of this server side application was made by taking into consideration how it would integrate into a real, full stack application. (e.g. The validation of input data should be made on client side and should not be, in most cases, the responsibility of the backend side)
+
+The API exposes the following functionalities:
+
+- The possibility to register as a doctor or an assistant. As it was mentioned before, there is one manager account in the application and it predefined.
+  Router : /api/v1/register
+  Type: POST
+  Permissions: None
+  Body: A JSON containing `email` and `password` fields
+
+- The possibility to authenticate in your own account.
+  Router : /api/v1/login
+  Type: POST
+  Permissions: None
+  Note: It will return a JWT token
+
+- Doctor Management: ( Only the Manager has permissions on these controllers)
+
+  1. Create a doctor  
+     Router : /api/v1/doctor
+     Type: POST
+  2. Get a doctor by his ID
+     Router : /api/v1/doctor/:id
+     Type: GET
+  3. Get all doctors in the system
+     Router : /api/v1/doctors
+     Type: GET
+  4. Update a doctor in the system by his ID
+     Router : /api/v1/doctor/:id
+     Type: PATCH
+  5. Delete a doctor in the system by his ID
+     Router : /api/v1/doctor/:id
+     Type: DELETE
+
+Assistant Management: ( Only the Manager has permissions on these controllers)
+
+1. Create a assistant  
+   Router : /api/v1/assistant
+   Type: POST
+2. Get a assistant by his ID
+   Router : /api/v1/assistant/:id
+   Type: GET
+3. Get all assistants in the system
+   Router : /api/v1/assistants
+   Type: GET
+4. Update a assistant in the system by his ID
+   Router : /api/v1/assistant/:id
+   Type: PATCH
+5. Delete a assistant in the system by his ID
+   Router : /api/v1/assistant/:id
+   Type: DELETE
+
+Patient Management: ( Only the Manager and the Doctor have permissions on these controllers)
+
+1. Create a patient  
+   Router : /api/v1/patient
+   Type: POST
+2. Get a patient by his ID
+   Router : /api/v1/patient/:id
+   Type: GET
+3. Get all patients in the system
+   Router : /api/v1/patients
+   Type: GET
+4. Update a patient in the system by his ID
+   Router : /api/v1/patient/:id
+   Type: PATCH
+5. Delete a patient in the system by his ID
+   Router : /api/v1/patient/:id
+   Type: DELETE
+
+Treatment Management: ( Only the Manager and the Doctor have permissions on these controllers)
+
+1. Create a treatment  
+   Router : /api/v1/treatment
+   Type: POST
+2. Get all treatments in the system
+   Router : /api/v1/treatments
+   Type: GET
+3. Delete a treatment in the system by his ID
+   Router : /api/v1/treatment/:id
+   Type: DELETE
+
+Associating and disassociating a Pacient to / from an Assistant. (Only the Manager and the Doctor have permissions on these controllers)
+
+1. Associating
+   Router : /api/v1/patient/assistant/associate
+   Type: PATCH
+2. Disassociating
+   Router : /api/v1/patient/assistant/disassociate
+   Type: PATCH
+
+Associating and disassociating a Pacient to / from an Doctor. (Only the Manager and the Doctor have permissions on these controllers)
+
+1. Associating
+   Router : /api/v1/patient/doctor/associate
+   Type: PATCH
+2. Disassociating
+   Router : /api/v1/patient/doctor/disassociate
+   Type: PATCH
+
+Get the assigned Patients of a Doctor or Assistant. This controller is implemented in a modular manner, so all 3 entities ( Manager, Assistant, Doctor ) can perform this action, each one with its own scenario. If the action is performed by the Manager, the ID of the Doctor/Assistant must be present in the URL. In contrast, if the action is performed by an Assistant or a Doctor, the paramater should not be present.
+
+1.  Router: /api/v1/patients/assigned/:id?
+    Type: GET
+
+Generating a report with all the Doctors in the system and their patients, along with statistics regarding the number of patients over 50 years old, as well as the number of the patients which suffer from gastritis or diabetes. ( Only the Manager and the Doctor can perform this action )
+
+1. Router: /api/v1/doctors/report
+   Type: GET
+
+The Assistant can apply a treatment on a Patient. This translates in completing a suggestive field in the Patient object in the database, indicating that a certain Assistant took care of the Patient. ( Only the Assistant can perform this action )
+
+1. Router: /api/v1/treatment/apply
+   Type: PATCH
+
+Generating applied treatments or the prescribed treatments for a certain Patient as a list.
+( Only the Manager and the Doctor can perform this action)
+
+1. Get Applied Treatments
+   Router: /api/v1/treatments/applied/:id
+   Type: GET
+2. Get Prescribed Treatments
+   Router: /api/v1/treatments/:id
+   Type: GET
+
+// DOCKER
+
+In order to run the application in a docker container, make sure you have Docker installed on your computer, then run the following commands:
+
+1. Build a Docker image
+   docker build -t image-name .
+2. Run the container
+   docker run -p 3000:3000 image-name
+
+! In second command, first number indicates the PORT of the host machine and the second one the PORT oof the container.
+
+To stop a container: 1. open a second terminal and run `docker ps` 2. run `docker stop CONTAINER_ID` where CONTAINER_ID is the number seen in the previous command (you can target the id easily by accessing the minimum unique substring of the ID in comparison with the other IDs
+e.g. Container ID is d4aaaa.... , you can run `docker stop d4` and it will target it, if no other container has ID starting with `d4`
+)

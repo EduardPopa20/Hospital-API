@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: Your API Name
+  version: 1.0.0
+  description: A short description of your API
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /assistants:
+    post:
+      summary: Creates a new assistant
+      operationId: createAssistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                age:
+                  type: integer
+                address:
+                  type: string
+                phone:
+                  type: string
+                role:
+                  type: string
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  assistant:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      user:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+    get:
+      summary: Gets all assistants
+      operationId: getAllAssistants
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    user:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        firstName:
+                          type: string
+                        lastName:
+                          type: string
+                        email:
+                          type: string
+                        age:
+                          type: integer
+                        address:
+                          type: string
+                        phone:
+                          type: string
+                        role:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+      security:
+        - bearerAuth: []
+  /assistants/{assistantId}:
+    get:
+      summary: Gets an assistant by ID
+      operationId: getAssistantById
+      parameters:
+        - name: assistantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  assistant:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      user:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                          firstName:
+                            type: string
+                          lastName:
+                            type: string
+                          email:
+                            type: string
+                          age:
+                            type: integer
+                          address:
+                            type: string
+                          phone:
+                            type: string
+                          role:
+                            type: string
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+    put:
+      summary: Updates an assistant by ID
+      operationId: updateAssistantById
+      parameters:
+        - name: assistantId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
